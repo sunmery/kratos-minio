@@ -1,0 +1,73 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: FileService API
+    description: 文件服务
+    version: 0.0.1
+paths:
+    /admin/v1/file:upload-url:
+        post:
+            tags:
+                - FileService
+            description: 获取对象存储（OSS）上传链接
+            operationId: FileService_OssUploadUrl
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/helloworld.v1.OssUploadUrlRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.OssUploadUrlResponse'
+components:
+    schemas:
+        helloworld.v1.OssUploadUrlRequest:
+            type: object
+            properties:
+                method:
+                    type: integer
+                    description: 上传文件所用的HTTP方法，支持POST和PUT
+                    format: enum
+                contentType:
+                    type: string
+                    description: 文件的MIME类型
+                bucketName:
+                    type: string
+                    description: 文件桶名称，如果不填写，将会根据文件名或者MIME类型进行自动解析
+                filePath:
+                    type: string
+                    description: 远端的文件路径，可以不填写
+                fileName:
+                    type: string
+                    description: 文件名，如果不填写，则会生成UUID，有同名文件也会改为UUID
+            description: 获取对象存储上传链接 - 请求
+        helloworld.v1.OssUploadUrlResponse:
+            type: object
+            properties:
+                uploadUrl:
+                    type: string
+                    description: 文件的上传链接，默认1个小时的过期时间
+                downloadUrl:
+                    type: string
+                    description: 文件的下载链接
+                bucketName:
+                    type: string
+                    description: 文件桶名称
+                objectName:
+                    type: string
+                    description: 文件名
+                formData:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: 表单数据，使用POST方法时填写
+            description: 获取对象存储上传链接 - 回应
+tags:
+    - name: FileService
